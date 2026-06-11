@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raport Stagiu - Unitate de Învățare</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-invatare.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-title">Practică</a>
+    <nav class="site-nav">
+      <a href="stagiar.html"   class="nav-item">Stagiar</a>
+      <a href="jurnal.html"    class="nav-item">Activități</a>
+      <a href="invatare.html"  class="nav-item active">Învățare</a>
+      <a href="probleme.html"  class="nav-item">Probleme</a>
+      <a href="concluzii.html" class="nav-item">Concluzii</a>
+    </nav>
+  </div>
+</header>
+
+<div class="chapter-banner fade-1">
+  <div class="chapter-banner-inner">
+    <h1>Unitate de învățare<br><em>Moștenirea în Lanț în C#</em></h1>
+    <div class="chapter-meta">
+      <span class="badge badge-red">Programare Orientată pe Obiecte</span>
+      <p>Introducere în moștenire și analiza detaliată a moștenirii în lanț cu exemple practice.</p>
+    </div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!--Introducere-->
+  <div class="fade-2">
+    <span class="chapter-label">Introducere</span>
+    <h2 class="chapter-title">Ce este moștenirea în POO?</h2>
+    <div class="chapter-rule"></div>
+
+    <div class="intro-block">
+      <div class="intro-text">
+        <p class="body-text">
+          <strong>Moștenirea</strong> este unul dintre cele patru piloni fundamentali ai programării orientate pe obiecte, 
+          alături de încapsulare, polimorfism și abstractizare. Ea permite unei clase noi să preia (să <em>moștenească</em>) 
+          proprietățile și metodele unei clase deja existente, fără a rescrie codul de la zero.
+        </p>
+        <p class="body-text">
+          Clasa din care se moștenește se numește <strong>clasă de bază</strong> (sau părinte), iar clasa care moștenește 
+          se numește <strong>clasă derivată</strong> (sau copil). În C#, moștenirea se declară folosind simbolul <code>:</code>.
+        </p>
+        <p class="body-text">
+          Moștenirea nu este un mecanism de copiere a codului — este un mecanism de <strong>modelare a realității</strong>. 
+          Dacă modelarea este greșită, aplicația devine instabilă. Dacă este corectă, aplicația devine scalabilă.
+        </p>
+      </div>
+      <div class="intro-aside">
+        <div class="aside-card">
+          <div class="aside-card-label">Sintaxa în C#</div>
+          <div class="code-wrap" style="margin:0">
+            
+<pre>
+class Animal
+{
+    public string Nume { get; set; }
+}
+
+// Caine mosteneste din Animal
+class Caine : Animal
+{
+    public string Rasa { get; set; }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--tipuri de mostenire-->
+  <div class="fade-3">
+    <span class="chapter-label">Context</span>
+    <h2 class="chapter-title">Tipuri de moștenire în C#</h2>
+    <div class="chapter-rule"></div>
+
+    <div class="types-grid">
+
+      <div class="type-card">
+        <div class="type-card-icon">01</div>
+        <h4>Moștenire simplă</h4>
+        <p>O clasă derivată moștenește dintr-o singură clasă de bază.</p>
+        <div class="type-diagram">A → B</div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-card-icon">02</div>
+        <h4>Moștenire multiplă</h4>
+        <p>În C# <strong>nu este permisă</strong> între clase. Se realizează exclusiv prin 
+            <strong>interfețe</strong>, evitând ambiguitățile.</p>
+        <div class="type-diagram">A + B → C (interfețe)</div>
+      </div>
+
+      <div class="type-card type-card-active">
+        <div class="type-card-icon">03</div>
+        <h4>Moștenire în lanț</h4>
+        <p>O clasă derivată devine la rândul ei clasă de bază pentru o altă clasă.</p>
+        <div class="type-diagram">A → B → C</div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-card-icon">04</div>
+        <h4>Moștenire ierarhică</h4>
+        <p>O singură clasă de bază este moștenită de mai multe clase derivate.</p>
+        <div class="type-diagram">A → B, A → C</div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!--mostenirea in lant-->
+  <div class="fade-3">
+    <span class="chapter-label">Conceptul principal</span>
+    <h2 class="chapter-title">Moștenirea în Lanț — Multilevel Inheritance</h2>
+    <div class="chapter-rule"></div>
+
+    <div class="theory-grid">
+
+      <div class="th-card">
+        <div class="th-card-label">Definiție</div>
+        <h3>Ce este?</h3>
+        <p>Moștenirea în lanț este mecanismul prin care o clasă derivată devine 
+            la rândul ei clasă de bază pentru o altă clasă, formând astfel un 
+            <strong>lanț ierarhic</strong> de specializări progresive.</p>
+        <p>Structura de bază: <code>A → B → C</code>, unde <code>B</code> moștenește din 
+            <code>A</code>, iar <code>C</code> moștenește din <code>B</code>. Clasa 
+            <code>C</code> are acces la membrii din <em>toate</em> clasele din lanț.</p>
+      </div>
+
+      <div class="th-card">
+        <div class="th-card-label">Cuvinte cheie esențiale</div>
+        <h3>Mecanisme C#</h3>
+        <ul>
+          <li><code>base()</code> — apelează constructorul clasei de bază directe</li>
+          <li><code>virtual</code> — marchează o metodă ca suprascriptibilă</li>
+          <li><code>override</code> — suprascrie metoda virtuală din bază</li>
+          <li><code>protected</code> — accesibil în clasă și în toate derivatele</li>
+        </ul>
+      </div>
+
+      <div class="th-card">
+        <div class="th-card-label">Avantaje</div>
+        <h3>De ce să folosim?</h3>
+        <ul>
+          <li class="pro">Cod reutilizabil la fiecare nivel al ierarhiei</li>
+          <li class="pro">Specializare progresivă — fiecare nivel adaugă comportament</li>
+          <li class="pro">Reflectă natural relații din lumea reală</li>
+          <li class="pro">Polimorfism prin metode virtuale la toate nivelurile</li>
+        </ul>
+      </div>
+
+      <div class="th-card">
+        <div class="th-card-label">Dezavantaje și atenție</div>
+        <h3>Când poate fi problemă?</h3>
+        <ul>
+          <li class="con">Cuplaj strâns — modificările din bază se propagă în tot lanțul</li>
+          <li class="con">Ierarhii prea adânci (5+) devin greu de înțeles și întreținut</li>
+          <li class="con">Fragilitatea clasei de bază — o schimbare mică poate strica derivatele</li>
+          <li class="con">Dificil de testat izolat fiecare nivel</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIAGRAMA -->
+  <div class="fade-3">
+    <span class="chapter-label">Reprezentare vizuală</span>
+    <h2 class="chapter-title" style="font-size:22px;margin-bottom:20px;">Exemplu: Utilizator → Angajat → Manager</h2>
+    <div class="diagram-box">
+      <div class="dg-wrap">
+        <div class="dg-class">
+          <div class="dg-class-name">Utilizator</div>
+          <div class="dg-class-props">
+            + Id : int<br>
+            + Nume : string<br>
+            + Email : string<br>
+            + Login()<br>
+            + AfisareInfo() <span style="color:var(--c3)">virtual</span>
+          </div>
+        </div>
+        <div class="dg-label">Nivelul 1 — Bază</div>
+      </div>
+      <div class="dg-arrow"><div class="dg-arrow-line"></div></div>
+      <div class="dg-wrap">
+        <div class="dg-class dg-class-accent">
+          <div class="dg-class-name">Angajat</div>
+          <div class="dg-class-props">
+            + Salariu : double<br>
+            + Departament : string<br>
+            + Lucreaza()<br>
+            + CalculeazaBonus() <span style="color:var(--c3)">virtual</span><br>
+            <span style="color:var(--c4)">override</span> AfisareInfo()
+          </div>
+        </div>
+        <div class="dg-label">Nivelul 2</div>
+      </div>
+      <div class="dg-arrow"><div class="dg-arrow-line"></div></div>
+      <div class="dg-wrap">
+        <div class="dg-class dg-class-highlight">
+          <div class="dg-class-name">Manager</div>
+          <div class="dg-class-props">
+            + NumarEchipa : int<br>
+            + BugetDepartament : double<br>
+            + AprobaConcediu()<br>
+            <span style="color:var(--c4)">override</span> CalculeazaBonus()<br>
+            <span style="color:var(--c4)">override</span> AfisareInfo()
+          </div>
+        </div>
+        <div class="dg-label">Nivelul 3</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════
+       b) UTILIZARE PRACTICA
+  ══════════════════════════════════ -->
+  <div class="fade-3">
+    <span class="chapter-label">Modul de utilizare</span>
+    <h2 class="chapter-title">Când și unde se aplică?</h2>
+    <div class="chapter-rule"></div>
+
+    <div class="theory-grid">
+      <div class="th-card">
+        <div class="th-card-label">Situații reale</div>
+        <h3>Exemple din practică</h3>
+        <ul>
+          <li>Utilizator → Angajat → Manager</li>
+          <li>Produs → ProdusElectronic → Laptop</li>
+          <li>Cont → ContCurent → ContPremium</li>
+          <li>Vehicul → Mașină → Mașină electrică</li>
+        </ul>
+      </div>
+      <div class="th-card">
+        <div class="th-card-label">Reguli de utilizare</div>
+        <h3>Când este potrivită?</h3>
+        <ul>
+          <li>Există o relație clară de tip <em>„este un"</em> între clase</li>
+          <li>Fiecare nivel adaugă date sau comportament nou</li>
+          <li>Ierarhia nu depășește 3–4 niveluri de adâncime</li>
+          <li>Se aplică în aplicații mari unde organizarea clară este critică</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!--exemple de cod-->
+  <div class="fade-4">
+    <span class="chapter-label">Exemple practice</span>
+    <h2 class="chapter-title">Cod în C# — Ierarhia Utilizator → Angajat → Manager</h2>
+    <div class="chapter-rule"></div>
+
+    <p class="code-section-sub">Exemplu complet cu 3 niveluri de moștenire în lanț — din tema profesorului Inculeț Iulian.</p>
+
+    <!-- Utilizator -->
+    <p class="code-section-title">Nivelul 1 — Clasa de bază: Utilizator</p>
+    <div class="code-wrap">
+<pre>class Utilizator
+{
+    public int    Id     { get; set; }
+    public string Nume   { get; set; }
+    public string Email  { get; set; }
+    public string Parola { get; set; }
+
+    public Utilizator(int id, string nume, string email, string parola)
+    {
+        Id = id; Nume = nume; Email = email; Parola = parola;
+    }
+
+    public void Login(string parolaIntrodusa)
+    {
+        if (parolaIntrodusa == Parola)
+            Console.WriteLine(Nume + " s-a autentificat cu succes.");
+        else
+            Console.WriteLine("Parola incorecta.");
+    }
+
+    public void Logout()
+        => Console.WriteLine(Nume + " s-a delogat.");
+
+    <span class="cm">// virtual — poate fi suprascrisă în clasele derivate</span>
+    public virtual void AfisareInfo()
+    {
+        Console.WriteLine("Utilizator:");
+        Console.WriteLine("ID: " + Id + ", Nume: " + Nume + ", Email: " + Email);
+    }
+}</pre>
+    </div>
+
+    <!-- Angajat -->
+    <p class="code-section-title" style="margin-top:32px;">Nivelul 2 — Angajat moștenește Utilizator</p>
+    <div class="code-wrap">
+<pre>class Angajat : Utilizator   <span class="cm">// moștenește Utilizator</span>
+{
+    public double Salariu      { get; set; }
+    public string Departament { get; set; }
+
+    public Angajat(int id, string nume, string email, string parola,
+                   double salariu, string departament)
+        : base(id, nume, email, parola)   <span class="cm">// apelează constructorul Utilizator</span>
+    {
+        Salariu = salariu;
+        Departament = departament;
+    }
+
+    public void Lucreaza()
+        => Console.WriteLine(Nume + " lucrează în departamentul " + Departament);
+
+    <span class="cm">// virtual — Manager o va putea suprascrie</span>
+    public virtual double CalculeazaBonus() => Salariu * 0.10;
+
+    public override void AfisareInfo()
+    {
+        Console.WriteLine("Angajat:");
+        Console.WriteLine("Nume: " + Nume + ", Dept: " + Departament);
+        Console.WriteLine("Salariu: " + Salariu + ", Bonus: " + CalculeazaBonus());
+    }
+}
+</pre>
+    </div>
+
+    <!-- Manager -->
+    <p class="code-section-title" style="margin-top:32px;">Nivelul 3 — Manager moștenește Angajat (lanțul continuă)</p>
+    <div class="code-wrap">
+<pre>class Manager : Angajat   <span class="cm">// moștenește Angajat → lanțul: Utilizator → Angajat → Manager</span>
+{
+    public int    NumarEchipa       { get; set; }
+    public double BugetDepartament  { get; set; }
+
+    public Manager(int id, string nume, string email, string parola,
+                   double salariu, string departament,
+                   int numarEchipa, double buget)
+        : base(id, nume, email, parola, salariu, departament)
+    {
+        NumarEchipa = numarEchipa;
+        BugetDepartament = buget;
+    }
+
+    public void AprobaConcediu(string numeAngajat)
+        => Console.WriteLine("Managerul " + Nume + " a aprobat concediul pentru " + numeAngajat);
+
+    <span class="cm">// suprascrie CalculeazaBonus din Angajat — managerul primește 20%</span>
+    public override double CalculeazaBonus() => Salariu * 0.20;
+
+    public override void AfisareInfo()
+    {
+        Console.WriteLine("Manager:");
+        Console.WriteLine("Nume: " + Nume + ", Dept: " + Departament);
+        Console.WriteLine("Echipă: " + NumarEchipa + ", Buget: " + BugetDepartament);
+        Console.WriteLine("Bonus manager: " + CalculeazaBonus());
+    }
+}</pre>
+    </div>
+
+    <!-- Main -->
+    <p class="code-section-title" style="margin-top:32px;">Program principal — utilizare</p>
+    <div class="code-wrap">
+<pre>static void Main(string[] args)
+{
+    Utilizator user = new Utilizator(1, "Ion Popescu", "ion@mail.com", "1234");
+    Angajat    ang  = new Angajat(2, "Maria Ionescu", "maria@mail.com", "abcd", 8000, "IT");
+    Manager    man  = new Manager(3, "Andrei Vasilescu", "andrei@mail.com", "admin",
+                                   15000, "IT", 10, 500000);
+
+    user.Login("1234");
+    user.AfisareInfo();
+
+    ang.Lucreaza();
+    ang.AfisareInfo();
+
+    man.AprobaConcediu("Maria Ionescu");
+    man.AfisareInfo();
+}</pre>
+    </div>
+
+    <div class="explain-box">
+      <p><strong>Ce demonstrează acest cod:</strong> <code>Manager</code> moștenește din <code>Angajat</code>, care la rândul lui moștenește din <code>Utilizator</code> — acesta este lanțul. Fiecare nivel apelează constructorul de deasupra lui prin <code>base()</code>. Metoda <code>AfisareInfo()</code> este <code>virtual</code> în <code>Utilizator</code> și suprascrisă (<code>override</code>) la fiecare nivel. Polimorfismul face ca o referință de tip <code>Utilizator</code> care conține un obiect <code>Manager</code> să apeleze versiunea din <code>Manager</code>.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!--concluzii-->
+  <div class="fade-5">
+    <span class="chapter-label">Concluzii</span>
+    <h2 class="chapter-title">Observații și reflecții personale</h2>
+    <div class="chapter-rule"></div>
+
+    <div class="theory-grid">
+      <div class="th-card">
+        <div class="th-card-label">Ce am înțeles</div>
+        <h3>Observații personale</h3>
+        <p>Moștenirea în lanț devine cu adevărat puternică atunci când este combinată
+             cu metodele virtuale și polimorfismul. Cuvântul cheie 
+             <code>base()</code> este esențial — fără el constructorii nu se inițializează
+              corect pe toată ierarhia.</p>
+        <p>Cel mai dificil aspect a fost urmărirea ordinii de apel a constructorilor pe mai
+             mult de 2 niveluri, și înțelegerea faptului că <code>override</code> la nivelul 
+             3 suprascrie și versiunea de la nivelul 2.</p>
+      </div>
+      <div class="th-card">
+        <div class="th-card-label">Importanță practică</div>
+        <h3>De ce contează?</h3>
+        <p>Moștenirea în lanț se folosește în aplicații complexe, în sisteme mari, 
+            când construim extensii peste extensii.</p>
+        <p>Programatorii juniori o folosesc ca să scrie mai puțin cod. Programatorii 
+            seniori o folosesc ca să construiască <strong>arhitecturi coerente</strong> și
+             ușor de extins.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+    <div>RAPORT STAGIU DE PRACTICĂ · PRACTICA DE INSTRUIRE </div>
+    <div> © 2026 All rights reserved.</div>
+</footer>
+
+</body>
+</html>
